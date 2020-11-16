@@ -1,4 +1,5 @@
 ## AWS_task2
+Successfully complicated the task 2 given by vimal sir.
 ### Task Description:-
 1. Create Security group which allow the port 80.
 2. Launch EC2 instance.
