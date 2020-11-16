@@ -16,7 +16,7 @@ In the first step you have to declare your provider and its necessary login cred
 ```
 provider "aws" {
   region     = "ap-south-1"
-  profile    = "abhi"
+  profile    = "abhilasha"
 }
 ```
 #### Step 2 "Creating a security group".
@@ -63,13 +63,13 @@ In the third and the most critical step as all the steps above revolves around t
 resource "aws_instance" "myweb" {
 	ami		= "ami-005956c5f0f757d37"
 	instance_type	="t2.micro"
-	key_name          = "abhishek"
+	key_name          = "abhilasha"
   	security_groups   = [ "allow_http" ]
 
 	 connection {
     	type        = "ssh"
     	user        = "ec2-user"
-    	private_key = file("C:/Users/Abhishek/Downloads/abhishek.pem")
+    	private_key = file("C:/Users/Abhilasha/Downloads/abhilasha.pem")
     	host        = "${aws_instance.myweb.public_ip}"
   	}
   
@@ -82,7 +82,7 @@ resource "aws_instance" "myweb" {
  	 }
 
 	tags = {
-		Name = "Abhishekos"
+		Name = "Abhilashaos"
 	}
 }
 
@@ -111,7 +111,7 @@ resource "aws_s3_bucket" "myuniquebucket1227" {
 resource "aws_s3_bucket_object" "s3object" {
   bucket = "${aws_s3_bucket.myuniquebucket1227.id}"
   key    = "1076883.jpg"
-  source = "C:/Users/Abhishek/Downloads/1076883.jpg"
+  source = "C:/Users/Abhilasha/Downloads/1076883.jpg"
 }
 ```
 #### Step 5 "Cloud Front".
@@ -169,16 +169,16 @@ resource "aws_cloudfront_distribution" "imagecf" {
 In this step we are creating an extra EFS (Elastic File System) volume and attaching this extra created volume to our instances so that it can be accessed by us from instance. 
 ``` 
 resource “aws_efs_file_system” “efs_plus” {
-depends_on = [aws_security_group.abhitf_sg, aws_instance.AbhiOs1]
+depends_on = [aws_security_group.abhilashatf_sg, aws_instance.AbhilashaOs1]
 creation_token = “efs”
 tags = {
-Name = “aniefs”
+Name = “abhilashaefs”
 }
 }
 resource “aws_efs_mount_target” “mount_efs” {depends_on = [aws_efs_file_system.efs_plus]
 file_system_id = aws_efs_file_system.efs_plus.id
-subnet_id = aws_instance.Abhios.subnet_id
-security_groups=[aws_security_group.anitf_sg.id]
+subnet_id = aws_instance.Abhilashaos.subnet_id
+security_groups=[aws_security_group.abhilashatf_sg.id]
 }
 resource “null_resource” “cluster” {
 depends_on = [
@@ -187,14 +187,14 @@ aws_efs_file_system.efs_plus,
 connection {
 type = “ssh”
 user = “ec2-user”
-private_key = file("C:/Users/Abhishek/Downloads/abhi1234.pem")
-host = aws_instance.Abhios.public_ip
+private_key = file("C:/Users/Abhilasha/Downloads/abhi1234.pem")
+host = aws_instance.Abhilashaos.public_ip
 }
 provisioner “remote-exec” {
 inline = [“sudo echo ${aws_efs_file_system.efs_plus.dns_name}:/var/www/html efs defaults._netdev 0 0>>sudo /etc/fstab”,
 “sudo mount ${aws_efs_file_system.efs_plus.dns_name}:/var/www/html/*”,
 “sudo rm -rf /var/www/html/*”,
-“sudo git clone https://github.com/abiswah/AWS_2 /var/www/html “
+“sudo git clone https://github.com/abhilasha188/AWS_2 /var/www/html “
    ]
   }
 }
